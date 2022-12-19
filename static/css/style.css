@@ -66,6 +66,7 @@ body {
 
 .current_price_area {
     flex: 1;
+    padding-left: 4%;
 }
 
 .prediction_area {
