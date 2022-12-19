@@ -1,0 +1,236 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="top_wrapper">
+    <div class="top_area">
+        <div class="name_area">
+            <h3>{{company_code}}</h3>
+            <h2>{{company_name}}</h2>
+        </div>
+        <div class="current_price_area">
+            <h3>株価</h3>
+            <h1>{{stock_price_list[0][0]}}円</h1>
+        </div>
+    </div>
+    <div class="prediction_area">
+        <div class="score_wrapper">
+            <p>決定係数は</p>
+            <div class="score">
+                <h4 id="score">{{predicted_list[0]}}</h4>
+                <p>です</p>
+            </div>
+        </div>
+        <div class="correlation_wrapper">
+            <p>業績と株価の相関関係は</p>
+            <div class="correlation">
+                <h4 id="correlation"></h4>
+                <p>です</p>
+            </div>
+        </div>
+        <div class="prediction_price_wrapper">
+            <p>次回決算時期の予測株価は</p>
+            <div class="prediction_price">
+                <h3 id="min">{{predicted_list[1]}}円</h3>
+                <p>～</p>
+                <h3 id="max">{{predicted_list[2]}}円</h3>
+                <p>です</p>
+            </div>
+        </div>
+        <p id="warning">※予測と異なる場合があります</p>
+    </div>
+</div>
+<div class="stock_price_area">
+    <h3>株価</h3>
+    <div id="graph_stock_price"></div>
+</div>
+<div class="company_info_area">
+    <div class="settlement_area">
+        <h3>決算情報</h3>
+        <div id="settlement">
+            <table>
+                <thead>
+                    <tr>
+                    {% for item in settlement_t_head: %}
+                        <th>
+                            {{item}}
+                        </th>
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in settlement_t_body: %}
+                    <tr>
+                    {% for i in range(settlement_len): %}
+                        {% if i == 0: %}
+                            <th>{{row[i]}}</th>
+                        {% else: %}
+                            <td>{{row[i]}}</td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p>単位：百万円（1株当りの項目　単位：円）</p>
+    </div>
+    <div class="finance_area">
+        <h3>財務情報</h3>
+        <div id="finance">
+            <table>
+                <thead>
+                    <tr>
+                    {% for item in finance_t_head: %}
+                        <th>
+                            {{item}}
+                        </th>
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in finance_t_body: %}
+                    <tr>
+                    {% for i in range(finance_len): %}
+                        {% if i == 0: %}
+                            <th>{{row[i]}}</th>
+                        {% else: %}
+                            <td>{{row[i]}}</td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p>単位：百万円（1株当りの項目　単位：円）</p>
+    </div>
+    <div class="profitability_area">
+        <h3>収益性</h3>
+        <div class="profitability_flex">
+            <div id="profitability">
+                <table>
+                    <thead>
+                        <tr>
+                        {% for item in profitability_t_head: %}
+                            <th>
+                                {{item}}
+                            </th>
+                        {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in profitability_t_body: %}
+                        <tr>
+                        {% for i in range(profitability_len): %}
+                            {% if i == 0: %}
+                                <th>{{row[i]}}</th>
+                            {% else: %}
+                                <td>{{row[i]}}</td>
+                            {% endif %}
+                        {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div id="graph_profitability"></div>
+        </div>
+    </div>
+</div>
+
+<py-script>
+correlation = None
+score = {{predicted_list}}[0]
+
+if score >= 0.75:
+    correlation = '非常に強い'
+elif score >= 0.6 and score < 0.75:
+    correlation = '強い'
+elif score >= 0.4 and score < 0.6:
+    correlation = '普通'
+elif score >= 0.15 and score < 0.4:
+    correlation = '弱い'
+else:
+    correlation = '非常に弱い'
+
+display(correlation, target='correlation')
+</py-script>
+
+<py-script>
+# 収益性のグラフ
+import matplotlib.pyplot as plt
+
+
+fig1 = plt.figure()
+
+graph_profitability = fig1.add_subplot(1, 1, 1)
+
+t_head = {{profitability_t_head}}
+index = []
+roa = []
+roe = []
+
+for item in {{profitability_t_body}}:
+    date = item[0][:4] + '/' + item[0][5:6]
+    index.append(date)
+    roa.append(item[1])
+    roe.append(item[2])
+
+roa.reverse()
+roe.reverse()
+index.reverse()
+
+for i, (a, e) in enumerate(zip(roa, roe)):
+    roa[i] = float(a.rstrip('%'))
+    roe[i] = float(e.rstrip('%'))
+
+graph_profitability.plot(roe, color='#ffee00', marker='o', label="ROE")
+graph_profitability.plot(roa, color='blue', marker='o', label="ROA")
+
+plt.xticks([0, 1, 2, 3], [index[0], index[1], index[2], index[3]])
+plt.grid()
+fig1.legend()
+
+display(fig1, target='graph_profitability')
+</py-script>
+
+<py-script>
+# 株価のグラフ
+
+import datetime
+
+
+today = datetime.datetime.now()
+year = int(today.strftime("%Y"))
+month = today.strftime("%m")
+
+labels = []
+for i in reversed(range(5)):
+    labels.append(str(year-i) + month)
+
+    
+fig2 = plt.figure()
+
+graph_stock_price = fig2.add_subplot(1, 1, 1)
+
+avg_list = {{stock_price_list}}[0]
+sma75_list = {{stock_price_list}}[1]
+sma200_list = {{stock_price_list}}[2]
+
+avg_list.reverse()
+sma75_list.reverse()
+sma200_list.reverse()
+
+graph_stock_price.plot(avg_list, color='gray')
+graph_stock_price.plot(sma75_list, color='red')
+graph_stock_price.plot(sma200_list, color='blue')
+
+plt.xticks([0, len(avg_list)*0.25, len(avg_list)*0.5, len(avg_list)*0.75, len(avg_list)],
+            [labels[0], labels[1], labels[2], labels[3], labels[4]])
+plt.grid()
+
+display(fig2, target='graph_stock_price')
+
+</py-script>
+    
+{% endblock %}

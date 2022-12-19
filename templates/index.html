@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>株価予測</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <py-config type="json">
+        {
+          "autoclose": false,
+          "runtimes": [{
+            "src": "https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js",
+            "name": "pyodide-0.21.3",
+            "lang": "python"
+          }],
+
+          "packages": ["matplotlib"]
+        }
+    </py-config>
+</head>
+
+<body>
+	<div class="container">
+		<div id="title">
+			<h2>株価予測アプリ</h2>
+		</div>
+		<div class="input_wrapper">
+			<form action="/result", method="get">
+				<label for="input_company"></label>
+				<input type="text" name="input_company" placeholder="銘柄を検索">
+				<button type="submit" class="btn btn-secondary" id="input_company_btn">検索</button>
+			</form>
+		</div>
+		{% block content %}
+		{% endblock %}
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+		crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

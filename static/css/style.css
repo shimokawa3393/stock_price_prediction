@@ -1,0 +1,234 @@
+body {
+    background: #f9f9f9;
+}
+
+/* index.html */
+
+#title h2 {
+    margin-top: 80px;
+    font-size: 36px;
+    text-align: center;
+}
+
+.input_wrapper {
+    text-align: center;
+}
+
+.input_wrapper input {
+    margin-top: 48px;
+    width: 50%;
+    height: 36px;
+}
+
+#input_company_btn {
+    margin-left: 10px;
+}
+
+
+/* result.html */
+
+.search_result {
+    margin-top: 48px;
+    text-align: center;
+}
+
+.search_result table {
+    width: 100%;
+    border: solid 1px gainsboro;
+    text-align: center;
+}
+
+.search_result tr {
+    border: solid 1px gainsboro;
+}
+
+.search_result th {
+    background: #d3def3dc;
+}
+
+
+/* prediction.html */
+
+.top_area {
+    background: #1818b7d3;
+    color: whitesmoke;
+    border: solid 1px gainsboro;
+    margin-top: 60px;
+    padding-top: 12px;
+    display: flex;
+}
+
+
+.name_area {
+    padding-left: 32px;
+    flex: 1;
+}
+
+.current_price_area {
+    flex: 1;
+}
+
+.prediction_area {
+    padding-top: 4%;
+    border: solid 1px gainsboro;
+}
+
+.prediction_area p {
+    font-size: 16px;
+}
+
+.score_wrapper p {
+    margin-left: 8%;
+}
+
+.score {
+    display: flex;
+    justify-content: space-between;
+    padding: 2% 8%;
+    width: 100%;
+}
+
+#score {
+    flex: 3;
+    text-align: right;
+}
+
+.score p {
+    flex: 2;
+    text-align: left;
+}
+
+.correlation_wrapper p {
+    margin-left: 8%;
+}
+
+.correlation {
+    display: flex;
+    justify-content: space-between;
+    padding: 2% 8%;
+    width: 100%;
+}
+
+#correlation {
+    flex: 3;
+    text-align: right;
+}
+
+.correlation p {
+    flex: 2;
+    text-align: left;
+}
+
+.prediction_price_wrapper p {
+    margin-left: 8%;
+}
+
+.prediction_price {
+    display: flex;
+    justify-content: space-between;
+    padding: 2% 8%;
+}
+
+.prediction_price h3 {
+    flex: 2;
+    text-align: right;
+}
+
+.prediction_price p {
+    flex: 1;
+    text-align: left;
+}
+
+
+#warning {
+    color: red;
+    padding-top: 4%;
+    padding-right: 4%;
+    text-align: right;
+}
+
+
+.stock_price_area h3 {
+    padding-top: 48px;
+}
+
+.stock_price_area h3::before {
+    content: "▶";
+}
+
+.company_info_area h3::before {
+    content: "▶";
+}
+
+.company_info_area table {
+    width: 100%;
+    margin-top: 2%;
+}
+
+.company_info_area th {
+    background: #d3def3dc;
+    border: solid 1px gainsboro;
+    text-align: center;
+}
+
+.company_info_area td {
+    border: solid 1px gainsboro;
+    text-align: right;
+}
+
+.company_info_area p {
+    text-align: right;
+}
+
+.settlement_area {
+    margin-top: 48px;
+}
+
+
+.finance_area {
+    margin-top: 48px;
+    width: 100%;
+}
+
+.profitability_area {
+    margin-top: 48px;
+    margin-bottom: 100px;
+    width: 100%;
+}
+
+
+/* large screen */
+@media (min-width: 1000px) {
+    .top_wrapper {
+        width: 80%;
+        margin: auto;
+    }
+
+    .stock_price_area  {
+        width: 80%;
+        margin: auto;
+    }
+
+    .company_info_area {
+        width: 70%;
+        margin: auto;
+    }
+
+    .profitability_flex {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .prediction_flex table {
+        flex: 2;
+    }
+
+    #graph-profitability {
+        flex: 3;
+    }
+
+}
+  
+  
+
+

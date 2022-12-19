@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+{% block content %}
+
+
+<div class="search_result">
+    {% if num > 0: %}
+    <table>
+        <tr>
+            <th>企業コード</th>
+            <th>企業名</th>
+        </tr>
+        {% for k, v in obj.items(): %}
+        <tr>
+            {% if k == '上場廃止': %}
+                <td>{{ k }}</td>
+                <td>{{ v }}</td>
+            {% else: %}
+                <td>{{ k }}</td>
+                <td><a href="/prediction/{{ k }}/{{ v }}">{{ v }}</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    {% else: %}
+        {% if obj == "error": %}
+            <h3>検索ワードが一致しません</h3>
+        {% endif %}    
+    {% endif %}
+</div> 
+
+
+{% endblock %}
